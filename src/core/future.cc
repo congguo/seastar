@@ -243,6 +243,7 @@ public:
 };
 }
 
+// cguo: vvv seastar thread
 void internal::future_base::do_wait() noexcept {
     auto thread = thread_impl::get();
     assert(thread);
