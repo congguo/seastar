@@ -3498,6 +3498,7 @@ reactor_options::reactor_options(program_options::option_group* parent_group)
 {
 }
 
+// cguo: vvv cpu
 smp_options::smp_options(program_options::option_group* parent_group)
     : program_options::option_group(parent_group, "SMP options")
     , smp(*this, "smp", {}, "number of threads (default: one per CPU)")
@@ -3892,6 +3893,7 @@ void smp::configure(const smp_options& smp_opts, const reactor_options& reactor_
     const auto* native_stack = dynamic_cast<const net::native_stack_options*>(reactor_opts.network_stack.get_selected_candidate_opts());
     _using_dpdk = native_stack && native_stack->dpdk_pmd;
 #endif
+    // cguo: vvv cpu
     auto thread_affinity = smp_opts.thread_affinity.get_value();
     if (reactor_opts.overprovisioned
            && smp_opts.thread_affinity.defaulted()) {
@@ -3916,6 +3918,7 @@ void smp::configure(const smp_options& smp_opts, const reactor_options& reactor_
     std::copy(boost::counting_iterator<unsigned>(0), boost::counting_iterator<unsigned>(nr_cpus),
             std::inserter(cpu_set, cpu_set.end()));
 
+    // cguo: vvv cpu 是从命令行参数传进去的
     if (smp_opts.cpuset) {
         cpu_set = smp_opts.cpuset.get_value();
         if (cgroup_cpu_set && *cgroup_cpu_set != cpu_set) {
