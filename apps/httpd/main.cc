@@ -112,7 +112,7 @@ int main(int ac, char** av) {
             server->set_routes(set_routes).get();
             server->set_routes([rb](routes& r){rb->set_api_doc(r);}).get();
             server->set_routes([rb](routes& r) {rb->register_function(r, "demo", "hello world application");}).get();
-            server->listen(port).get();
+            server->listen(port).mget();
 
             std::cout << "Seastar HTTP server listening on port " << port << " ...\n";
             engine().at_exit([&prometheus_server, server, pport] {

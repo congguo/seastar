@@ -463,6 +463,7 @@ public:
     }
 };
 
+// cguo: vvv network process
 future<accept_result>
 posix_server_socket_impl::accept() {
     return _lfd.accept().then([this] (std::tuple<pollable_fd, socket_address> fd_sa) {

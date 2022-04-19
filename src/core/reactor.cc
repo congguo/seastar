@@ -222,11 +222,13 @@ future<> reactor::rename_queues(io_priority_class pc, sstring new_name) noexcept
     });
 }
 
+// cguo: vvv network
 future<std::tuple<pollable_fd, socket_address>>
 reactor::do_accept(pollable_fd_state& listenfd) {
     return readable_or_writeable(listenfd).then([this, &listenfd] () mutable {
         socket_address sa;
         listenfd.maybe_no_more_recv();
+        // cguo: vvv network
         auto maybe_fd = listenfd.fd.try_accept(sa, SOCK_NONBLOCK | SOCK_CLOEXEC);
         if (!maybe_fd) {
             // We speculated that we will have an another connection, but got a false
@@ -422,6 +424,7 @@ pollable_fd_state::abort_writer() {
     engine().abort_writer(*this);
 }
 
+// cguo: vvv network
 future<std::tuple<pollable_fd, socket_address>> pollable_fd_state::accept() {
     return engine()._backend->accept(*this);
 }

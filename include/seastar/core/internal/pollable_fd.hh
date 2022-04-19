@@ -181,6 +181,7 @@ protected:
     friend class writeable_eventfd;
     friend class aio_storage_context;
 private:
+    // cguo: vvv network
     pollable_fd_state_ptr _s;
 };
 

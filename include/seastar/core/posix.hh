@@ -131,6 +131,8 @@ public:
         throw_system_error_on(fd == -1, "dup");
         return file_desc(fd);
     }
+
+    // cguo: vvv network
     file_desc accept(socket_address& sa, int flags = 0) {
         auto ret = ::accept4(_fd, &sa.as_posix_sockaddr(), &sa.addr_length, flags);
         throw_system_error_on(ret == -1, "accept4");
@@ -477,6 +479,7 @@ sigset_t make_empty_sigset_mask() {
     return set;
 }
 
+// cguo: vvv cpu
 inline
 void pin_this_thread(unsigned cpu_id) {
     cpu_set_t cs;
