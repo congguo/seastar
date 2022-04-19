@@ -3913,6 +3913,8 @@ void smp::configure(const smp_options& smp_opts, const reactor_options& reactor_
     smp::_tmain = std::this_thread::get_id();
     auto nr_cpus = resource::nr_processing_units(rc);
     resource::cpuset cpu_set;
+    // cguo: vvv cpu, 如果kubelet没有支持static cpu policy，该container就不会有cgroup cpu set
+    // 因而就不会启动thread affinity
     auto cgroup_cpu_set = cgroup::cpu_set();
 
     std::copy(boost::counting_iterator<unsigned>(0), boost::counting_iterator<unsigned>(nr_cpus),
